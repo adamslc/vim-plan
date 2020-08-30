@@ -64,10 +64,20 @@ function! plan#GetCurrentPlanByDay()
   return planFile
 endfunction
 
+function! plan#AddDayEntry()
+  let planMonth = plan#GetCurrentPlanByMonth()
+  let daynum  = strftime('%d')
+  let weekday = strftime("%A")
+  let monthname = strftime('%B')
+  execute 'edit' planMonth
+  silent exe "normal! gg/== Days ==\<cr>o[[" . daynum . "|" . weekday . ", " . monthname . " " . daynum . "]]"
+endfunction
+
 function! plan#OpenCurrentPlanByDay()
   let plan = plan#GetCurrentPlanByDay()
   execute 'edit' plan
   if !filereadable(plan)
+    plan#AddDayEntry()
     "read in the template file if available
     let tmplPath = g:PlanTemplatePath . "day.wiki"
     if filereadable(tmplPath)
