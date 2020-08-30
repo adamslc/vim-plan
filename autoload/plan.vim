@@ -4,11 +4,11 @@ endif
 let g:loaded_plan_vim = 1
 
 if !exists("g:PlanPath")
-  let g:PlanPath = "~/.plan/"
+  let g:PlanPath = "/home/luke/.plan/"
 endif
 
 if !exists("g:PlanTemplatePath")
-  let g:PlanTemplatePath = "~/.plan/templates/"
+  let g:PlanTemplatePath = "/home/luke/.plan/templates/"
 endif
 
 function! plan#replaceTemplateVariables()
