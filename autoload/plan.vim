@@ -40,7 +40,7 @@ endfunction
 
 function! plan#GetCurrentPlanByYear()
   let planYear = strftime('%Y')
-  let planFile = g:PlanPath . planYear . "/year.md"
+  let planFile = g:PlanPath . '/' . planYear . "/index.wiki"
   call plan#EnsureDirectoryExists(g:PlanPath . planYear)
   return planFile
 endfunction
@@ -49,25 +49,27 @@ function! plan#GetCurrentPlanByMonth()
   let planMonth = strftime('%B')
   let planMonthNumber = strftime('%m')
   let planYear = strftime('%Y')
-  let planFile = g:PlanPath . planYear . "/" . planMonthNumber . '-' .planMonth . ".md"
-  call plan#EnsureDirectoryExists(g:PlanPath . planYear)
+  let planFile = g:PlanPath . planYear . '/' . planMonthNumber . '-' . planMonth . "/index.wiki"
+  call plan#EnsureDirectoryExists(g:PlanPath . planYear . '/' . planMonthNumber . '-' . planMonth)
   return planFile
 endfunction
 
-function! plan#GetCurrentPlanByWeek()
-  let planWeek = strftime('%V')
+function! plan#GetCurrentPlanByDay()
+  let planDay  = strftime('%d')
+  let planMonth = strftime('%B')
+  let planMonthNumber = strftime('%m')
   let planYear = strftime('%Y')
-  let planFile = g:PlanPath . planYear . "/weeks/" . planWeek . ".md"
-  call plan#EnsureDirectoryExists(g:PlanPath . planYear . "/weeks")
+  let planFile = g:PlanPath . planYear . '/' . planMonthNumber . '-' . planMonth . '/' . planDay . ".wiki"
+  call plan#EnsureDirectoryExists(g:PlanPath . planYear . '/' . planMonthNumber . '-' . planMonth)
   return planFile
 endfunction
 
-function! plan#OpenCurrentPlanByWeek()
-  let plan = plan#GetCurrentPlanByWeek()
+function! plan#OpenCurrentPlanByDay()
+  let plan = plan#GetCurrentPlanByDay()
   execute 'edit' plan
   if !filereadable(plan)
     "read in the template file if available
-    let tmplPath = g:PlanTemplatePath . "week"
+    let tmplPath = g:PlanTemplatePath . "day.wiki"
     if filereadable(tmplPath)
       execute 'read ' . tmplPath
       call plan#replaceTemplateVariables()
@@ -81,7 +83,7 @@ function! plan#OpenCurrentPlanByMonth()
   execute 'edit' plan
   if !filereadable(plan)
     "read in the template file if available
-    let tmplPath = g:PlanTemplatePath . "month"
+    let tmplPath = g:PlanTemplatePath . "month.wiki"
     if filereadable(tmplPath)
       execute 'read ' . tmplPath
       call plan#replaceTemplateVariables()
@@ -95,7 +97,7 @@ function! plan#OpenCurrentPlanByYear()
   execute 'edit' plan
   if !filereadable(plan)
     " read in the template file if available
-    let tmplPath = g:PlanTemplatePath . "year"
+    let tmplPath = g:PlanTemplatePath . "year.wiki"
     if filereadable(tmplPath)
       execute 'read ' . tmplPath
       call plan#replaceTemplateVariables()
